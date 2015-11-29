@@ -14,10 +14,10 @@ class AnswersController < ApplicationController
     end
   end
 
-private
+  private
 
   def answer_params
-    params.require(:answer).permit(:title, :body, :question_id)
+    params.require(:answer).permit(:title, :body)
   end
 
   def load_question

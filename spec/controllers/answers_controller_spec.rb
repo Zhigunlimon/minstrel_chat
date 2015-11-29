@@ -18,7 +18,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'successful creation' do
       it 'creates new answer' do
-        expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(Answer, :count).by(1)
+        expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)
       end
 
       it 'redirect to question show view' do
