@@ -1,0 +1,8 @@
+p= @question.title
+p= @question.body
+= link_to 'Delete question', question_path(@question), method: 'delete'
+= link_to 'Answer question', new_question_answer_path(@question)
+- @question.answers.each do |a|
+  p= a.title
+  p= a.body
+  = link_to 'Delete answer', question_answer_path(@question, a), method: 'delete'

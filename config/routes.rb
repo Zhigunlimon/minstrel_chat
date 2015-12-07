@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  resources :questions, only: [:index, :show, :new, :create] do
-    resources :answers, only: [:new, :create]
+
+  devise_for :users
+  root to: 'questions#index'
+
+  resources :questions, only: [:index, :show, :new, :create, :destroy] do
+    resources :answers, only: [:new, :create, :destroy]
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
