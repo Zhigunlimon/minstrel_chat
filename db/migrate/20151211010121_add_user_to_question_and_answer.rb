@@ -1,6 +1,6 @@
 class AddUserToQuestionAndAnswer < ActiveRecord::Migration
   def change
-    add_column :questions, :user_id, :integer
-    add_column :answers, :user_id, :integer
+    add_reference :questions, :user, index: true, foreign_key: true
+    add_reference :answers, :user, index: true, foreign_key: true
   end
 end

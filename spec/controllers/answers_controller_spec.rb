@@ -22,8 +22,14 @@ RSpec.describe AnswersController, type: :controller do
     context 'successful creation' do
       it 'creates new answer' do
         expect {
-          post :create, question_id: question, answer: attributes_for(:answer, user: @user)
+          post :create, question_id: question, answer: attributes_for(:answer)
         }.to change(question.answers, :count).by(1)
+      end
+
+      it 'new answer belongs to current user' do
+        expect {
+          post :create, question_id: question, answer: attributes_for(:answer)
+        }.to change(@user.answers, :count).by(1)
       end
 
       it 'redirect to question show view' do

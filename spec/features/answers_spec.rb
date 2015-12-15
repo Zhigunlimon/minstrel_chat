@@ -45,8 +45,11 @@ feature 'Answers', %q{
     answer
     visit question_path(question)
     click_on 'Delete answer'
+    save_and_open_page
 
     expect(page).to have_content 'Your answer was successfully deleted.'
+    expect(page).to_not have_content answer.title
+    expect(page).to_not have_content answer.body
   end
 
   scenario 'User try to delete not his answer' do
@@ -55,8 +58,7 @@ feature 'Answers', %q{
     question
     answer2
     visit question_path(question)
-    click_on 'Delete answer'
 
-    expect(page).to have_content 'Your answer was not deleted.'
+    expect(page).to_not have_content 'Delete answer'
   end
 end

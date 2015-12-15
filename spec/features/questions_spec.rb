@@ -41,6 +41,8 @@ feature 'Questions', %q{
     click_on 'Create question'
 
     expect(page).to have_content 'Your question successfully created.'
+    expect(page).to have_content 'Test question'
+    expect(page).to have_content 'Test body text'
   end
 
   scenario 'Unauthenticated user creates question' do
@@ -67,8 +69,7 @@ feature 'Questions', %q{
     question1
     visit questions_path
     click_on 'Show question'
-    click_on 'Delete question'
 
-    expect(page).to have_content 'Your question was not deleted.'
+    expect(page).to_not have_content 'Delete question'
   end
 end

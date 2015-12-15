@@ -52,12 +52,12 @@ RSpec.describe QuestionsController, type: :controller do
     context 'successful creation' do
       it 'creates new question' do
         expect {
-          post :create, question: attributes_for(:question, user: @user)
+          post :create, question: attributes_for(:question)
         }.to change(@user.questions, :count).by(1)
       end
 
       it 'redirect to show view' do
-        post :create, question: attributes_for(:question, user: @user)
+        post :create, question: attributes_for(:question)
         expect(response).to redirect_to question_path(assigns(:question))
       end
     end

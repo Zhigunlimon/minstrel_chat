@@ -7,7 +7,6 @@ class QuestionsController < ApplicationController
   end
 
   def show
-
   end
 
   def new
@@ -15,7 +14,7 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
+    @question = Question.new(question_params.merge!(user: current_user))
     if @question.save
       flash[:notice] = 'Your question successfully created.'
       redirect_to @question
@@ -25,7 +24,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if @question.user_id == current_user.id && @question.destroy
+    if current_user.author_of?(@question) && @question.destroy
       flash[:notice] = 'Your question was successfully deleted.'
     else
       flash[:notice] = 'Your question was not deleted.'
@@ -36,7 +35,7 @@ class QuestionsController < ApplicationController
   private
 
   def question_params
-    params.require(:question).permit(:title, :body, :user_id)
+    params.require(:question).permit(:title, :body)
   end
 
   def find_question
