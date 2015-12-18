@@ -1,19 +1,13 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
-  before_action :load_question, only: [:create, :new]
+  before_action :authenticate_user!, only: :create
+  before_action :load_question, only: :create
   before_action :find_answer, only: :destroy
-  def new
-    @answer = Answer.new
-    render :new
-  end
+
 
   def create
     @answer = @question.answers.new(answer_params.merge!(user: current_user))
     if @answer.save
       flash[:notice] = 'Your answer successfully created.'
-      redirect_to @question
-    else
-      render :new
     end
   end
 

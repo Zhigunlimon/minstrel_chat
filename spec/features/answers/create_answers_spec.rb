@@ -7,23 +7,22 @@ feature 'Create answers', %q{
         } do
 
   given(:user) { create(:user) }
-  given(:question) { create(:question, user: user) }
+  given!(:question) { create(:question, user: user) }
 
-  scenario 'Authenticated user answers question' do
+  scenario 'Authenticated user answers question', js: true do
     sign_in(user)
 
     visit question_path(question)
-    click_on 'Answer question'
-    fill_in 'Body', with: 'New Answer body'
-    click_on 'Create answer'
+    fill_in 'Your answer', with: 'New Answer body'
+    click_on 'Create'
 
-    expect(page).to have_content 'Your answer successfully created.'
     expect(page).to have_content 'New Answer body'
   end
 
-  scenario 'Unauthenticated user answers question' do
+  scenario 'Unauthenticated user answers question', js: true do
     visit question_path(question)
-    click_on 'Answer question'
+    fill_in 'Your answer', with: 'New Answer body'
+    click_on 'Create'
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
