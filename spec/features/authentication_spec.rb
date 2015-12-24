@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'feature_helper'
 
 feature 'User authentication actions', %q{
         In order to be able to use site like registered user or visitor
