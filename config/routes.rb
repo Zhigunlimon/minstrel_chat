@@ -5,6 +5,9 @@ Rails.application.routes.draw do
 
   resources :questions, only: [:index, :show, :new, :create, :destroy] do
     resources :answers, shallow: true
+    member do
+      post 'best_answer', to: 'answers#best_answer', as: :best_answer
+    end
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
