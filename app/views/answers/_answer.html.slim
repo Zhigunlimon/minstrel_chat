@@ -2,7 +2,7 @@ div id="answer-#{answer.id}" class=('best-answer' if @question.best_answer.prese
   p= answer.body
   - if answer.persisted?
     - if  current_user && current_user.author_of?(@question)
-      p= link_to 'Best answer', best_answer_question_path(answer), method: :post, remote: true
+      p= link_to 'Best answer', best_answer_answer_path(answer), method: :post, remote: true
     - if current_user && current_user.author_of?(answer)
       p= link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       p= link_to 'Delete answer', answer, method: :delete, remote: true

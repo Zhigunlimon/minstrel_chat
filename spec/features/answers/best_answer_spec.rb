@@ -13,7 +13,7 @@ feature 'Best answer', %q{
   given!(:best_answer) {create(:answer, question: question) }
 
   describe 'Authenticated question author' do
-    before() do
+    before do
       sign_in(user)
       visit question_path(question)
     end
@@ -34,6 +34,10 @@ feature 'Best answer', %q{
       within "#answer-#{answer.id}" do
         click_on 'Best answer'
       end
+
+      expect(page).to_not have_selector ".best-answer#answer-#{best_answer.id}"
+      expect(page).to have_selector ".best-answer#answer-#{answer.id}"
+
       within "#answer-#{best_answer.id}" do
         click_on 'Best answer'
       end
@@ -45,6 +49,10 @@ feature 'Best answer', %q{
     scenario 'cancel best answer assignment', js: true do
       within "#answer-#{best_answer.id}" do
         click_on 'Best answer'
+      end
+      expect(page).to have_selector '.best-answer'
+
+      within "#answer-#{best_answer.id}" do
         click_on 'Best answer'
       end
       expect(page).to_not have_selector '.best-answer'
@@ -52,7 +60,7 @@ feature 'Best answer', %q{
   end
 
   describe 'Authenticated user (not question author)' do
-    before() do
+    before do
       sign_in(another_user)
       visit question_path(question)
     end

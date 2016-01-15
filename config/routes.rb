@@ -4,9 +4,8 @@ Rails.application.routes.draw do
   root to: 'questions#index'
 
   resources :questions, only: [:index, :show, :new, :create, :destroy] do
-    resources :answers, shallow: true
-    member do
-      post 'best_answer', to: 'answers#best_answer', as: :best_answer
+    resources :answers, shallow: true do
+      post :best_answer, on: :member
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

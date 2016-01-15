@@ -12,7 +12,9 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params)
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
+    end
     @question = @answer.question
   end
 
@@ -24,15 +26,12 @@ class AnswersController < ApplicationController
   end
 
   def best_answer
-    question = @answer.question
-    if question.best_answer != @answer
-      question.best_answer = @answer
+    @answer.question.best_answer = @answer
+    if @answer.question.best_answer.present?
       render template: 'answers/select_best_answer'
     else
-      question.best_answer = nil
       render template: 'answers/cancel_best_answer'
     end
-    question.save
   end
 
   private

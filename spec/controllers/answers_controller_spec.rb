@@ -42,6 +42,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #update' do
     sign_in_user
     let!(:answer) { create(:answer, question: question, user: @user) }
+    let!(:foreign_answer) { create(:answer, question: question) }
 
     it 'assigns the requested answer to @answer' do
       patch :update, id: answer, question_id: question, answer: attributes_for(:answer), format: :js
@@ -53,10 +54,17 @@ RSpec.describe AnswersController, type: :controller do
       expect(assigns(:question)).to eq question
     end
 
-    it 'changes answer attributes' do
-      patch :update, id: answer, question_id: question, answer: { body: 'edited answer body'}, format: :js
-      answer.reload
-      expect(answer.body).to eq 'edited answer body'
+    context 'when user tries to' do
+      it 'change his answer' do
+        patch :update, id: answer, question_id: question, answer: { body: 'edited answer body'}, format: :js
+        answer.reload
+        expect(answer.body).to eq 'edited answer body'
+      end
+
+      it 'change not his answer' do
+        patch :update, id: foreign_answer, question_id: question, answer: { body: 'edited answer body'}, format: :js
+        expect(answer.body).to_not eq 'edited answer body'
+      end
     end
 
     it 'render update template' do
@@ -101,10 +109,14 @@ RSpec.describe AnswersController, type: :controller do
     sign_in_user
     let!(:answer) { create(:answer, question: question, user: @user) }
 
+    it 'assigns the requested answer to @answer' do
+      post :best_answer, id: answer, format: :js
+      expect(assigns(:answer)).to eq answer
+    end
+
     context 'when assign new best question' do
       it 'assigns best answer to question' do
         post :best_answer, id: answer, format: :js
-        question.reload
         expect(question.best_answer).to eq answer
       end
 
@@ -117,17 +129,13 @@ RSpec.describe AnswersController, type: :controller do
     context 'when cancel questions best answer assignment' do
       it 'cancel best answer assignment' do
         question.best_answer = answer
-        question.save
-        question.reload
+        answer.reload
         post :best_answer, id: answer, format: :js
-        question.reload
         expect(question.best_answer).to be(nil)
       end
 
       it 'render cancel_best_answer template' do
         question.best_answer = answer
-        question.save
-        question.reload
         post :best_answer, id: answer, format: :js
         expect(response).to render_template :cancel_best_answer
       end
