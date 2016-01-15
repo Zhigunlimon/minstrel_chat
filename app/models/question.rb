@@ -7,7 +7,7 @@ class Question < ActiveRecord::Base
   validates :title, :body, :user_id, presence: true
 
   def best_answer
-    @best_answer = Answer.where(best_answer: true, question: self).first
+    @best_answer = answers.where(best_answer: true).first
   end
 
   def best_answer=(best_answer)
