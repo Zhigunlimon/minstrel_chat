@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: :create
   before_action :load_question, only: :create
-  before_action :find_answer, only: :destroy
+  before_action :find_answer, only: [:destroy, :update, :best_answer]
 
 
   def create
@@ -11,14 +11,27 @@ class AnswersController < ApplicationController
     end
   end
 
+  def update
+    if current_user.author_of?(@answer)
+      @answer.update(answer_params)
+    end
+    @question = @answer.question
+  end
+
   def destroy
     @question = @answer.question
-    if current_user.author_of?(@answer) && @answer.destroy
-      flash[:notice] = 'Your answer was successfully deleted.'
-    else
-      flash[:notice] = 'Your answer was not deleted.'
+    if current_user.author_of?(@answer)
+      @answer.destroy
     end
-    redirect_to question_path(@question)
+  end
+
+  def best_answer
+    @answer.question.best_answer = @answer
+    if @answer.question.best_answer.present?
+      render template: 'answers/select_best_answer'
+    else
+      render template: 'answers/cancel_best_answer'
+    end
   end
 
   private

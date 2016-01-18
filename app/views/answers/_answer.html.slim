@@ -1,4 +1,13 @@
-
-p= answer.body
-- if current_user && current_user.author_of?(answer)
-  = link_to 'Delete answer', answer, method: :delete
+div id="answer-#{answer.id}" class=('best-answer' if @question.best_answer.present? && @question.best_answer == answer)
+  p= answer.body
+  - if answer.persisted?
+    - if  current_user && current_user.author_of?(@question)
+      p= link_to 'Best answer', best_answer_answer_path(answer), method: :post, remote: true
+    - if current_user && current_user.author_of?(answer)
+      p= link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+      p= link_to 'Delete answer', answer, method: :delete, remote: true
+      p
+        = form_for answer, method: :put, remote: true, html: { id: "edit-answer-#{answer.id}"} do |f|
+          = f.label :body, "Answer"
+          = f.text_area :body
+          = f.submit 'Update'
