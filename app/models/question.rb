@@ -1,5 +1,7 @@
 class Question < ActiveRecord::Base
   has_many :answers, -> { order('best_answer DESC') }, dependent: :delete_all
+  has_many :attachments, as: :attachable
+  accepts_nested_attributes_for :attachments
   belongs_to :user
 
   attr_accessor :best_answer
