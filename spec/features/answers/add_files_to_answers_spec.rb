@@ -40,6 +40,4 @@ feature 'Add files to answers', %q{
       expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/2/rails_helper.rb'
     end
   end
-
-  scenario 'Author of answer delete files'
 end

@@ -7,6 +7,7 @@ feature 'Add files to questions', %q{
         } do
 
   given(:user) { create(:user) }
+  given(:question) { create(:question) }
 
   background do
     sign_in(user)
@@ -39,6 +40,4 @@ feature 'Add files to questions', %q{
     expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
     expect(page).to have_link 'rails_helper.rb', href: '/uploads/attachment/file/2/rails_helper.rb'
   end
-
-  scenario 'Author of question delete files'
 end
