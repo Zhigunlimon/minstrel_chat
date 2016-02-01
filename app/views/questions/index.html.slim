@@ -1,6 +1,6 @@
 - @questions.each do |q|
   = q.title
-  br
   = link_to 'Show question', question_path(q)
+  br
 
 p= link_to 'Ask question', new_question_path

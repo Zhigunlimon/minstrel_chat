@@ -1,5 +1,14 @@
 p= @question.title
 p= @question.body
+p Attachments:
+ul
+  - @question.attachments.each do |a|
+    div id="attachment-#{a.id}"
+      li
+        a>= link_to a.file.identifier, a.file.url
+        - if user_signed_in? && current_user.author_of?(a.attachable)
+          a= link_to 'delete file', attachment_path(a), method: :delete, remote: true
+
 - if current_user && current_user.author_of?(@question)
   = link_to 'Delete question', @question, method: :delete
 
@@ -7,7 +16,15 @@ p= @question.body
   = render @question.answers
 
 = form_for [@question, @answer], remote: true do |f|
-  = f.label :body, 'Your answer'
-  .answer-errors
-  = f.text_area :body
-  = f.submit 'Create'
+  p
+    = f.label :body, 'Your answer'
+    .answer-errors
+    = f.text_area :body
+
+  p Attachments:
+  p
+    = f.fields_for :attachments do |attachment|
+      = render 'partials/attachment_fields', f: attachment
+    .links
+      = link_to_add_association 'add file', f, :attachments, partial: 'partials/attachment_fields'
+  p= f.submit 'Create'
