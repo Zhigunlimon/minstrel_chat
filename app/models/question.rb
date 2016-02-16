@@ -3,6 +3,7 @@ class Question < ActiveRecord::Base
   has_many :attachments, as: :attachable
   accepts_nested_attributes_for :attachments, reject_if: :all_blank, allow_destroy: true
   belongs_to :user
+  has_many :votes, as: :votable, dependent: :destroy
 
   attr_accessor :best_answer
 
