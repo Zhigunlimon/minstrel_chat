@@ -14,18 +14,6 @@ feature 'Add files to questions', %q{
     visit new_question_path
   end
 
-  scenario 'Authenticated user creates question with one file', js: true do
-    fill_in 'Title', with: 'Test question'
-    fill_in 'Body', with: 'Test body text'
-
-    click_link 'add file'
-    page.all("input[type='file']").first.set("#{Rails.root}/spec/spec_helper.rb")
-
-    click_on 'Create question'
-
-    expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
-  end
-
   scenario 'Authenticated user creates question with multiple files', js: true do
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'Test body text'
