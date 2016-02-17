@@ -9,8 +9,8 @@ feature 'Vote for question', %q{
   given(:user) { create(:user) }
   given(:question_author) { create(:user) }
   given!(:question) { create(:question, user: question_author) }
-  given(:positive_vote) { create(:vote_question, :positive, question: question, user: user) }
-  given(:negative_vote) { create(:vote_question, :negative, question: question, user: user) }
+  given(:positive_vote) { create(:vote_question, :positive, votable: question, user: user) }
+  given(:negative_vote) { create(:vote_question, :negative, votable: question, user: user) }
 
   describe 'Authenticated user' do
     before do
